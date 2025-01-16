@@ -1,0 +1,17 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Launch Program",
+        "type": "node",
+        "request": "launch",
+        "skipFiles": ["<node_internals>/**"],
+        "program": "${workspaceFolder}/dist/app.js",  // Change to the path of your compiled JS file
+        "preLaunchTask": "npm: build",
+        "outFiles": [
+          "${workspaceFolder}/dist/**/*.js"  // Ensure this points to your compiled JavaScript files
+        ]
+      }
+    ]
+  }
+  

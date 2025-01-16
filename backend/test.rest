@@ -1,0 +1,38 @@
+POST http://localhost:5000/api/Account/Register
+Content-Type: application/json
+
+{
+  "Username": "123455",
+  "Password": "securepassword123"
+}
+
+###
+POST http://localhost:5000/api/Account/Login
+Content-Type: application/json
+
+{
+  "Username": "123455",
+  "Password": "securepassword123"
+}
+
+###
+DELETE   http://localhost:5000/api/Account/Delete
+Content-Type: application/json
+
+{
+  "UserId": 1
+}
+
+###
+PUT   http://localhost:5000/api/Account/Update
+Content-Type: application/json
+
+{
+  "UserId": 27,
+  "Username": "4444", 
+  "Password": "124443"
+}
+
+###
+GET   http://localhost:5000/api/Account/GetUser
+
