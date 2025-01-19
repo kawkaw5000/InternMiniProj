@@ -1,12 +1,13 @@
 'use client';
-import '../styles/globals.css'
+import '../styles/globals.css';
+import styles from '../styles/Hexagon.module.css';
 import Image from 'next/image';
 import Button from '../components/Button';
 import { JSX } from 'react';
 
 export default function HomePage(): JSX.Element {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'start', height: '3230px' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'start', height: 'auto' }}>
 
         {/* Home */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-none w-11/12 h-3/4 mt-8">
@@ -404,14 +405,244 @@ export default function HomePage(): JSX.Element {
         </div>
 
         {/* Contact */}
-        <div style={{ position: 'absolute', top: '410%', left: '29.2%', transform: 'translate(-50%, -50%)', border: '1px solid black', height: '75%', width: '50%', borderRadius: '10px' }}>
-          <div style={{ position: 'relative', top: '-30px', left:'80px', width: '200px', backgroundColor: 'white'}}>
-            <h1 style={{ fontSize: '2.5rem', fontWeight: 'bold', textAlign: 'center'}}>Contact</h1>
-          </div>
-          
-        </div>
-        
+        <div style={{ position: 'absolute', top: '410%', left: '21.7%', transform: 'translate(-50%, -50%)', border: '1px solid black', height: '75%', width: '35%', borderRadius: '10px'}}>
+          <div style={{ position: 'relative', top: '0px', left:'50%', width: '230px', backgroundColor: 'white', transform: 'translate(-50%, -50%)'}}>
+              <h1 style={{ fontSize: '2.5rem', fontWeight: 'bold', textAlign: 'center'}}>Contact Me</h1>
+            </div>
+            <div
+            style={{
+              position: 'relative',
+              width: '100%',
+              height: '100%',
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'center',
+              alignItems: 'start', 
+              gap: '40px',
+            }}
+          >
+            <div
+              style={{
+                position: 'relative',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'start',
+                alignItems: 'center',
+                gap: '80px',
+                marginTop: '30px',
+              }}
+            >
+            <div 
+              style={{
+                position: 'relative',
+              }}>
+                <input
+                  type="text"
+                  placeholder=""
+                  style={{
+                    width: '280px',
+                    height: '30px',
+                    border: 'none',
+                    borderBottom: '2px solid #000',
+                    outline: 'none',
+                    padding: '5px',
+                    fontSize: '16px',
+                    transition: 'border-color 0.3s',
+                  }}
+                  onFocus={(e) => (e.target.style.borderBottom = '2px solid #007BFF')} 
+                  onBlur={(e) => (e.target.style.borderBottom = '2px solid #000')} />
+                <div
+                style={{
+                  position: 'absolute',
+                  top: '-30px',
+                }}>
+                  <span
+                  style={{
+                    fontSize: '1.1rem',
+                  }}>
+                    Full Name
+                  </span>
+                </div>
+            </div>
 
+            <div 
+              style={{
+                position: 'relative',
+              }}>
+                <input
+                  type="text"
+                  placeholder=""
+                  style={{
+                    width: '280px',
+                    height: '30px',
+                    border: 'none',
+                    borderBottom: '2px solid #000',
+                    outline: 'none',
+                    padding: '5px',
+                    fontSize: '16px',
+                    transition: 'border-color 0.3s',
+                  }}
+                  onFocus={(e) => (e.target.style.borderBottom = '2px solid #007BFF')} 
+                  onBlur={(e) => (e.target.style.borderBottom = '2px solid #000')} />
+                <div
+                style={{
+                  position: 'absolute',
+                  top: '-30px',
+                }}>
+                  <span
+                  style={{
+                    fontSize: '1.1rem',
+                  }}>
+                    Email
+                  </span>
+                </div>
+            </div>
+
+            <div 
+              style={{
+                position: 'relative',
+              }}>
+                <input
+                  type="text"
+                  placeholder=""
+                  style={{
+                    width: '280px',
+                    height: '30px',
+                    border: 'none',
+                    borderBottom: '2px solid #000',
+                    outline: 'none',
+                    padding: '5px',
+                    fontSize: '16px',
+                    transition: 'border-color 0.3s',
+                  }}
+                  onFocus={(e) => (e.target.style.borderBottom = '2px solid #007BFF')} 
+                  onBlur={(e) => (e.target.style.borderBottom = '2px solid #000')} />
+                <div
+                style={{
+                  position: 'absolute',
+                  top: '-30px',
+                }}>
+                  <span
+                  style={{
+                    fontSize: '1.1rem',
+                  }}>
+                    Message
+                  </span>
+                </div>
+            </div>
+            
+            <button className="px-4 py-2 bg-black text-white rounded-3xl hover:bg-gray-900 w-full">
+              Submit
+            </button>
+            <div style={{
+            position: 'absolute',
+            top: '-90px',
+            right: '-760px',
+            width: '190%',
+            height: '141%',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            gap: '20px'
+            }}>
+              <div className={styles.hex}>
+                <Image
+                  src="/serviceIcon/streamline_web.svg"
+                  alt="file"
+                  width={90}
+                  height={90}
+                  className="rounded-lg"
+                />
+              </div>
+              <div className={styles.hex}>
+                <Image
+                  src="/serviceIcon/streamline_web.svg"
+                  alt="file"
+                  width={90}
+                  height={90}
+                  className="rounded-lg"
+                />
+              </div>
+            </div>
+            <div style={{
+            position: 'absolute',
+            top: '-90px',
+            right: '-900px',
+            width: '190%',
+            height: '141%',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            gap: '20px'
+            }}>
+              <div className={styles.hex}>
+                <Image
+                  src="/serviceIcon/streamline_web.svg"
+                  alt="file"
+                  width={90}
+                  height={90}
+                  className="rounded-lg"
+                />
+              </div>
+              <div className={styles.hex}>
+                <Image
+                  src="/serviceIcon/streamline_web.svg"
+                  alt="file"
+                  width={90}
+                  height={90}
+                  className="rounded-lg"
+                />
+              </div>
+              <div className={styles.hex}>
+                <Image
+                  src="/serviceIcon/streamline_web.svg"
+                  alt="file"
+                  width={90}
+                  height={90}
+                  className="rounded-lg"
+                />
+              </div>
+            </div>
+            <div style={{
+            position: 'absolute',
+            top: '-90px',
+            right: '-1040px',
+            width: '190%',
+            height: '141%',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            gap: '20px'
+            }}>
+              <div className={styles.hex}>
+                <Image
+                  src="/serviceIcon/streamline_web.svg"
+                  alt="file"
+                  width={90}
+                  height={90}
+                  className="rounded-lg"
+                />
+              </div>
+              <div className={styles.hex}>
+                <Image
+                  src="/serviceIcon/streamline_web.svg"
+                  alt="file"
+                  width={90}
+                  height={90}
+                  className="rounded-lg"
+                />
+              </div>
+            </div>
+          </div>         
+        </div>
+             
+        </div>
+
+        <div style={{ position: 'absolute',top: '418%', left: '29.2%', transform: 'translate(-50%, -50%)', height: '75%', width: '50%', pointerEvents: 'none', visibility: 'hidden'}}>
+        </div>
     </div> 
   );
 }

@@ -1,0 +1,22 @@
+.hex {
+    height: 140px;
+    aspect-ratio: 1/cos(30deg);
+    clip-path: polygon(50% -50%, 100% 50%, 50% 150%, 0 50%);
+    background: linear-gradient(-45deg, #eeeeee36, #00000031);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .hexAlt {
+    position: relative;;
+    height: 140px;
+    aspect-ratio: 1/cos(30deg);
+    clip-path: polygon(50% -50%, 100% 50%, 50% 150%, 0 50%);
+    background: linear-gradient(-45deg, rgb(161, 37, 37), rgb(255, 46, 46));
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
