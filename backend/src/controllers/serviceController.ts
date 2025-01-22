@@ -1,4 +1,3 @@
-import { user } from '@prisma/client';
 import { BaseController } from './baseController';
 import { ErrorCode } from '../utils/utilities';
 import { Request, Response, NextFunction } from 'express';
@@ -20,42 +19,24 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage });
-export class HomeController extends BaseController {
+
+export class ServiceController extends BaseController {
     constructor() {
         super();
     }
 
-    public getUserHomeListByUserId = async (req: Request, res: Response, next: NextFunction) => {
-        const currentUser = (req as any).user;
-        const loggedInUserId = currentUser.sub;
-        const home = await this._homeManager.getUserListByUserId(loggedInUserId);
-
-        if (!home) {
-            res.status(404).json({ code: ErrorCode.NotFound, message: 'Home User not found' });
-            return;
-        }
-        res.status(200).json({ code: ErrorCode.Success, message: 'Home found', home });
-        return;
+    public getServiceList = async (req: Request, res: Response, next: NextFunction) => {
+        const serviceList = await this._serviceManager.userServiceList();
+        res.status(200).json({ code: ErrorCode.Success, message: 'Service list found', serviceList });
     };
 
-    public getList = async (req: Request, res: Response, next: NextFunction) => {
-        const homes = await this._homeManager.listUserHomes();
-        res.status(200).json({ code: ErrorCode.Success, message: 'Home list found', homes });
-    };
-
-    public addHome = async (req: Request, res: Response, next: NextFunction) => {
+    public addService = async (req: Request, res: Response, next: NextFunction) => {
         const uploadMultiple = upload.fields([
-            { name: 'UserImg', maxCount: 1 },
-            { name: 'ImgBox1', maxCount: 1 },
-            { name: 'ImgBox2', maxCount: 1 },
-            { name: 'ImgBox3', maxCount: 1 },
-            { name: 'ImgBox4', maxCount: 1 },
-            { name: 'ImgBox5', maxCount: 1 },
-            { name: 'ImgBox6', maxCount: 1 },
-            { name: 'ImgBox7', maxCount: 1 },
-            { name: 'ImgBox8', maxCount: 1 },
-            { name: 'ImgBox9', maxCount: 1 },
-            { name: 'ImgBox10', maxCount: 1 }
+            { name: 'SkillsImgIcon1', maxCount: 1 },
+            { name: 'SkillsImgIcon2', maxCount: 1 },
+            { name: 'SkillsImgIcon3', maxCount: 1 },
+            { name: 'SkillsImgIcon4', maxCount: 1 },
+            { name: 'SkillsImgIcon5', maxCount: 1 },
         ]);
 
         uploadMultiple(req, res, async (err) => {
@@ -65,7 +46,7 @@ export class HomeController extends BaseController {
 
             try {
                 const filePaths: { [key: string]: string | null } = {};
-                ['UserImg', 'ImgBox1', 'ImgBox2', 'ImgBox3', 'ImgBox4', 'ImgBox5', 'ImgBox6', 'ImgBox7', 'ImgBox8', 'ImgBox9', 'ImgBox10']
+                ['SkillsImgIcon1', 'SkillsImgIcon2', 'SkillsImgIcon3', 'SkillsImgIcon4', 'SkillsImgIcon5']
                     .forEach((field) => {
                         if (req.files && (req.files as any)[field]) {
                             const files = (req.files as any)[field];
@@ -85,19 +66,19 @@ export class HomeController extends BaseController {
                 const currentUser = (req as any).user;
                 const loggedInUserId = currentUser.sub;
                
-                const userhome = {
+                const services = {
                     ...req.body,
                     ...filePaths
                 };
                 
-                userhome.UserId = loggedInUserId;
+                services.UserId = loggedInUserId;
 
-                const result = await this._homeManager.createUserhome(userhome);
+                const result = await this._serviceManager.createUserServices(services);
 
                 if (result.code === ErrorCode.Success) {
                     console.log(loggedInUserId);
-                    console.log(userhome.UserId);
-                    res.status(200).json({ code: ErrorCode.Success, message: 'Home successfully created', userhome });
+                    console.log(services.UserId);
+                    res.status(200).json({ code: ErrorCode.Success, message: 'Service created successfully created', services });
                 } else {
                     res.status(400).json(result);
                     return;
@@ -106,48 +87,36 @@ export class HomeController extends BaseController {
                 return res.status(500).json({ code: ErrorCode.InternalError, message: 'Unknown error' });            
             }
         });
-    };
+    }
 
-    public updateHome = async (req: Request, res: Response, next: NextFunction) => {
+    public updateService = async (req: Request, res: Response, next: NextFunction) => {
         const uploadMultiple = upload.fields([
-            { name: 'UserImg', maxCount: 1 },
-            { name: 'ImgBox1', maxCount: 1 },
-            { name: 'ImgBox2', maxCount: 1 },
-            { name: 'ImgBox3', maxCount: 1 },
-            { name: 'ImgBox4', maxCount: 1 },
-            { name: 'ImgBox5', maxCount: 1 },
-            { name: 'ImgBox6', maxCount: 1 },
-            { name: 'ImgBox7', maxCount: 1 },
-            { name: 'ImgBox8', maxCount: 1 },
-            { name: 'ImgBox9', maxCount: 1 },
-            { name: 'ImgBox10', maxCount: 1 },
+            { name: 'SkillsImgIcon1', maxCount: 1 },
+            { name: 'SkillsImgIcon2', maxCount: 1 },
+            { name: 'SkillsImgIcon3', maxCount: 1 },
+            { name: 'SkillsImgIcon4', maxCount: 1 },
+            { name: 'SkillsImgIcon5', maxCount: 1 },
         ]);
-        
+
         uploadMultiple(req, res, async (err) => {
             if (err) {
                 return res.status(400).json({ code: ErrorCode.InternalError, message: 'File upload error' });
             }
-            const userHomeId = Number(req.body.UserHomeId);
+            const userServiceId = Number(req.body.UserServiceId);
 
-            const existingHome = await this._homeManager.getUserhomeById(userHomeId);
-            if (!existingHome) {            
-                return res.status(400).json({ code: ErrorCode.InternalError, message: 'User does not have a home' });   
+            const existingService = await this._serviceManager.getUserServiceById(userServiceId);
+            if (!existingService) {            
+                return res.status(400).json({ code: ErrorCode.InternalError, message: 'User does not have a About page' });   
             }
     
             try {
                 const filePaths: { [key: string]: string | null } = {};
                 const imageFields = [
-                    'UserImg',
-                    'ImgBox1',
-                    'ImgBox2',
-                    'ImgBox3',
-                    'ImgBox4',
-                    'ImgBox5',
-                    'ImgBox6',
-                    'ImgBox7',
-                    'ImgBox8',
-                    'ImgBox9',
-                    'ImgBox10',
+                    'SkillsImgIcon1',
+                    'SkillsImgIcon2',
+                    'SkillsImgIcon3',
+                    'SkillsImgIcon4',                    
+                    'SkillsImgIcon5',          
                 ];
     
                 imageFields.forEach((field) => {
@@ -158,7 +127,7 @@ export class HomeController extends BaseController {
                             filePaths[field] = `/HomeUploads/${files[0].filename}`;
                         }
                     } else {
-                        const existingPath = (existingHome as any)[field];
+                        const existingPath = (existingService as any)[field];
                         filePaths[field] = existingPath || null;
                     }
                 });
@@ -172,17 +141,17 @@ export class HomeController extends BaseController {
                     return res.status(403).json({ message: 'User is not authenticated' });
                 }
     
-                const userhomeUpdate = {
+                const updateServices = {
                     ...req.body,
                     ...filePaths,
                     UserId: loggedInUserId,
-                    UserHomeId: Number(req.body.UserHomeId),
+                    UserServiceId: Number(req.body.UserServiceId),
                 };
     
-                const result = await this._homeManager.updateUserhome(userhomeUpdate);
+                const result = await this._serviceManager.updateUserServices(updateServices);
     
                 if (result.code === ErrorCode.Success) {
-                    res.status(200).json({ code: ErrorCode.Success, message: 'Home successfully updated', userhome: userhomeUpdate });
+                    res.status(200).json({ code: ErrorCode.Success, message: 'Services page successfully updated', userServices: updateServices });
                 } else {
                     res.status(400).json(result);
                 }
@@ -191,6 +160,17 @@ export class HomeController extends BaseController {
                 res.status(500).json({ code: ErrorCode.InternalError, message: 'Unknown error' });
             }
         });
-    };
+    }
 
+    public deleteService = async (req: Request, res: Response, next: NextFunction) => {
+        const userService = req.body;
+        const userServiceId = Number(userService.UserServiceId);   
+        const result = await this._serviceManager.deleteUserService(userServiceId);
+
+        if(result.code !== ErrorCode.Success) {
+            res.status(400).json({ code: ErrorCode.InternalError, message: 'Error deleting Services' });
+            return;
+        }
+        res.status(200).json({ code: ErrorCode.Success, message: 'Selected Services is deleted successfully', result });
+    }
 }

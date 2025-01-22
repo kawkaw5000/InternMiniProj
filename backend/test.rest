@@ -2,8 +2,8 @@ POST http://localhost:5000/api/Account/Register
 Content-Type: application/json
 
 {
-  "Username": "1232455",
-  "Password": "securepassword123"
+  "Username": "lex123",
+  "Password": "Test.123"
 }
 
 ###
@@ -11,7 +11,16 @@ POST http://localhost:5000/api/Account/Login
 Content-Type: application/json
 
 {
-  "Username": "1232455",
+   "Username": "lex123",
+  "Password": "Test.123"
+}
+
+###
+POST http://localhost:5000/api/Account/Login
+Content-Type: application/json
+
+{
+  "Username": "kawkaw123",
   "Password": "securepassword123"
 }
 

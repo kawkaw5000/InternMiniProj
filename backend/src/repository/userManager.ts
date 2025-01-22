@@ -1,15 +1,17 @@
 import { BaseRepository } from './baseRepository';
 import { ErrorCode } from '../utils/utilities';
 import prisma from '../config/dbConfig';
-import { user } from '@prisma/client';
+import { user, userhome } from '@prisma/client';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
 export class UserManager {
-  private _userRepo: BaseRepository<user>;
+  private readonly _userRepo: BaseRepository<user>;
+  private readonly _userhomeRepo: BaseRepository<userhome>;
 
   constructor() {
     this._userRepo = new BaseRepository<user>(prisma.user, 'UserId');
+    this._userhomeRepo = new BaseRepository<userhome>(prisma.userhome, 'UserHomeId');
   }
 
   private generateJWT(user: user): string {
@@ -20,6 +22,7 @@ export class UserManager {
     const payload = {
       sub: user.UserId, 
       username: user.Username,
+      userhome: 45,
     };
   
     const token = jwt.sign(payload, process.env.JWT_SECRET as string, { 

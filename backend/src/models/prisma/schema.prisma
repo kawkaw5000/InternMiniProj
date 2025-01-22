@@ -8,10 +8,12 @@ datasource db {
 }
 
 model user {
-  UserId   Int        @id @default(autoincrement())
-  Username String?    @db.VarChar(50)
-  Password String?    @db.VarChar(255)
-  userhome userhome[]
+  UserId      Int           @id @default(autoincrement())
+  Username    String?       @db.VarChar(50)
+  Password    String?       @db.VarChar(255)
+  userabout   userabout[]
+  userhome    userhome[]
+  userservice userservice[]
 }
 
 model userhome {
@@ -28,7 +30,34 @@ model userhome {
   ImgBox8    String? @db.VarChar(255)
   ImgBox9    String? @db.VarChar(255)
   ImgBox10   String? @db.VarChar(255)
-  user       user?   @relation(fields: [UserId], references: [UserId], onDelete: Restrict, onUpdate: Restrict, map: "FK_User")
+  user       user?   @relation(fields: [UserId], references: [UserId], onDelete: Restrict, onUpdate: Restrict, map: "FK_UserHome")
 
-  @@index([UserId], map: "FK_User")
+  @@index([UserId], map: "FK_UserHome")
+}
+
+model userabout {
+  UserAboutId Int     @id @default(autoincrement())
+  UserId      Int?
+  UserImg     String? @db.VarChar(255)
+  ImgAbout1   String? @db.VarChar(255)
+  ImgAbout2   String? @db.VarChar(255)
+  ImgAbout3   String? @db.VarChar(255)
+  user        user?   @relation(fields: [UserId], references: [UserId], onDelete: Restrict, onUpdate: Restrict, map: "FK_UserAbout")
+
+  @@index([UserId], map: "FK_UserAbout")
+}
+
+model userservice {
+  UserServiceId  Int     @id @default(autoincrement())
+  UserId         Int?
+  SkillsImgIcon1 String? @db.VarChar(255)
+  SkillsImgIcon2 String? @db.VarChar(255)
+  SkillsImgIcon3 String? @db.VarChar(255)
+  SkillsImgIcon4 String? @db.VarChar(255)
+  SkillsImgIcon5 String? @db.VarChar(255)
+  Title          String? @db.VarChar(255)
+  Description    String? @db.VarChar(255)
+  user           user?   @relation(fields: [UserId], references: [UserId], onDelete: Cascade, onUpdate: Restrict, map: "FK_UserService")
+
+  @@index([UserId], map: "FK_UserService")
 }

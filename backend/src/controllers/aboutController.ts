@@ -20,42 +20,22 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage });
-export class HomeController extends BaseController {
+
+export class AboutController extends BaseController {
     constructor() {
         super();
     }
 
-    public getUserHomeListByUserId = async (req: Request, res: Response, next: NextFunction) => {
-        const currentUser = (req as any).user;
-        const loggedInUserId = currentUser.sub;
-        const home = await this._homeManager.getUserListByUserId(loggedInUserId);
-
-        if (!home) {
-            res.status(404).json({ code: ErrorCode.NotFound, message: 'Home User not found' });
-            return;
-        }
-        res.status(200).json({ code: ErrorCode.Success, message: 'Home found', home });
-        return;
+    public getAboutList = async (req: Request, res: Response, next: NextFunction) => {
+       const aboutList = await this._aboutManager.listAbout();
+       res.status(200).json({ code: ErrorCode.Success, message: 'About list found', aboutList });
     };
 
-    public getList = async (req: Request, res: Response, next: NextFunction) => {
-        const homes = await this._homeManager.listUserHomes();
-        res.status(200).json({ code: ErrorCode.Success, message: 'Home list found', homes });
-    };
-
-    public addHome = async (req: Request, res: Response, next: NextFunction) => {
+    public addNewAbout = async (req: Request, res: Response, next: NextFunction) => {
         const uploadMultiple = upload.fields([
-            { name: 'UserImg', maxCount: 1 },
-            { name: 'ImgBox1', maxCount: 1 },
-            { name: 'ImgBox2', maxCount: 1 },
-            { name: 'ImgBox3', maxCount: 1 },
-            { name: 'ImgBox4', maxCount: 1 },
-            { name: 'ImgBox5', maxCount: 1 },
-            { name: 'ImgBox6', maxCount: 1 },
-            { name: 'ImgBox7', maxCount: 1 },
-            { name: 'ImgBox8', maxCount: 1 },
-            { name: 'ImgBox9', maxCount: 1 },
-            { name: 'ImgBox10', maxCount: 1 }
+            { name: 'ImgAbout1', maxCount: 1 },
+            { name: 'ImgAbout2', maxCount: 1 },
+            { name: 'ImgAbout3', maxCount: 1 },
         ]);
 
         uploadMultiple(req, res, async (err) => {
@@ -65,7 +45,7 @@ export class HomeController extends BaseController {
 
             try {
                 const filePaths: { [key: string]: string | null } = {};
-                ['UserImg', 'ImgBox1', 'ImgBox2', 'ImgBox3', 'ImgBox4', 'ImgBox5', 'ImgBox6', 'ImgBox7', 'ImgBox8', 'ImgBox9', 'ImgBox10']
+                ['ImgAbout1', 'ImgAbout2', 'ImgAbout3']
                     .forEach((field) => {
                         if (req.files && (req.files as any)[field]) {
                             const files = (req.files as any)[field];
@@ -85,19 +65,19 @@ export class HomeController extends BaseController {
                 const currentUser = (req as any).user;
                 const loggedInUserId = currentUser.sub;
                
-                const userhome = {
+                const about = {
                     ...req.body,
                     ...filePaths
                 };
                 
-                userhome.UserId = loggedInUserId;
+                about.UserId = loggedInUserId;
 
-                const result = await this._homeManager.createUserhome(userhome);
+                const result = await this._aboutManager.createAbout(about);
 
                 if (result.code === ErrorCode.Success) {
                     console.log(loggedInUserId);
-                    console.log(userhome.UserId);
-                    res.status(200).json({ code: ErrorCode.Success, message: 'Home successfully created', userhome });
+                    console.log(about.UserId);
+                    res.status(200).json({ code: ErrorCode.Success, message: 'About created successfully created', about });
                 } else {
                     res.status(400).json(result);
                     return;
@@ -108,46 +88,30 @@ export class HomeController extends BaseController {
         });
     };
 
-    public updateHome = async (req: Request, res: Response, next: NextFunction) => {
+    public updateAbout = async (req: Request, res: Response, next: NextFunction) => {
         const uploadMultiple = upload.fields([
-            { name: 'UserImg', maxCount: 1 },
-            { name: 'ImgBox1', maxCount: 1 },
-            { name: 'ImgBox2', maxCount: 1 },
-            { name: 'ImgBox3', maxCount: 1 },
-            { name: 'ImgBox4', maxCount: 1 },
-            { name: 'ImgBox5', maxCount: 1 },
-            { name: 'ImgBox6', maxCount: 1 },
-            { name: 'ImgBox7', maxCount: 1 },
-            { name: 'ImgBox8', maxCount: 1 },
-            { name: 'ImgBox9', maxCount: 1 },
-            { name: 'ImgBox10', maxCount: 1 },
+            { name: 'ImgAbout1', maxCount: 1 },
+            { name: 'ImgAbout2', maxCount: 1 },
+            { name: 'ImgAbout3', maxCount: 1 },
         ]);
         
         uploadMultiple(req, res, async (err) => {
             if (err) {
                 return res.status(400).json({ code: ErrorCode.InternalError, message: 'File upload error' });
             }
-            const userHomeId = Number(req.body.UserHomeId);
+            const userAboutId = Number(req.body.UserAboutId);
 
-            const existingHome = await this._homeManager.getUserhomeById(userHomeId);
-            if (!existingHome) {            
-                return res.status(400).json({ code: ErrorCode.InternalError, message: 'User does not have a home' });   
+            const existingAbout = await this._aboutManager.getAboutById(userAboutId);
+            if (!existingAbout) {            
+                return res.status(400).json({ code: ErrorCode.InternalError, message: 'User does not have a About page' });   
             }
     
             try {
                 const filePaths: { [key: string]: string | null } = {};
                 const imageFields = [
-                    'UserImg',
-                    'ImgBox1',
-                    'ImgBox2',
-                    'ImgBox3',
-                    'ImgBox4',
-                    'ImgBox5',
-                    'ImgBox6',
-                    'ImgBox7',
-                    'ImgBox8',
-                    'ImgBox9',
-                    'ImgBox10',
+                    'ImgAbout1',
+                    'ImgAbout2',
+                    'ImgAbout3'
                 ];
     
                 imageFields.forEach((field) => {
@@ -158,7 +122,7 @@ export class HomeController extends BaseController {
                             filePaths[field] = `/HomeUploads/${files[0].filename}`;
                         }
                     } else {
-                        const existingPath = (existingHome as any)[field];
+                        const existingPath = (existingAbout as any)[field];
                         filePaths[field] = existingPath || null;
                     }
                 });
@@ -172,17 +136,17 @@ export class HomeController extends BaseController {
                     return res.status(403).json({ message: 'User is not authenticated' });
                 }
     
-                const userhomeUpdate = {
+                const updateAbout = {
                     ...req.body,
                     ...filePaths,
                     UserId: loggedInUserId,
-                    UserHomeId: Number(req.body.UserHomeId),
+                    UserAboutId: Number(req.body.UserAboutId),
                 };
     
-                const result = await this._homeManager.updateUserhome(userhomeUpdate);
+                const result = await this._aboutManager.updateAbout(updateAbout);
     
                 if (result.code === ErrorCode.Success) {
-                    res.status(200).json({ code: ErrorCode.Success, message: 'Home successfully updated', userhome: userhomeUpdate });
+                    res.status(200).json({ code: ErrorCode.Success, message: 'About page successfully updated', userhome: updateAbout });
                 } else {
                     res.status(400).json(result);
                 }
@@ -192,5 +156,4 @@ export class HomeController extends BaseController {
             }
         });
     };
-
 }

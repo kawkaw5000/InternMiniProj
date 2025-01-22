@@ -4,7 +4,7 @@ import prisma from '../config/dbConfig';
 import { userhome, user } from '@prisma/client';
 
 export class HomeManager {
-    private _userhomeRepo: BaseRepository<userhome>;
+    private readonly _userhomeRepo: BaseRepository<userhome>;
 
     constructor() {
         this._userhomeRepo = new BaseRepository<userhome>(prisma.userhome, 'UserHomeId');
@@ -14,7 +14,17 @@ export class HomeManager {
         return await this._userhomeRepo.getAll();
     }
 
-    public async getUserhomeByUserId(id: number): Promise<userhome | null> {
+    public async getUserListByUserId(userId: number): Promise<user[] | null> {
+        return await this._userhomeRepo._table.findFirst({
+            where: { UserId: userId }
+        });
+    }
+
+    public async listUserHomes(): Promise<userhome[]> {
+        return await this._userhomeRepo.getAll();
+    }
+
+    public async getUserhomeById(id: number): Promise<userhome | null> {
         return await this._userhomeRepo.get(id);
     }
 
@@ -29,21 +39,24 @@ export class HomeManager {
     }
 
     public async updateUserhome(u: userhome): Promise<{ code: ErrorCode; message: string }> {
-        if (!u.UserId) {
-            return { code: ErrorCode.BadRequest, message: 'UserId is required and cannot be null' };
-        }
-    
-        const existingUserhome = await this.getUserhomeByUserId(u.UserId);
+        const existingUserhome = await this.getUserhomeById(u.UserHomeId);
         if (!existingUserhome) {
             return { code: ErrorCode.NotFound, message: 'Userhome not found' };
         }
     
-        const updatedUserhome = {
-            ...existingUserhome,
-            ...u,
-        };
+        existingUserhome.ImgBox1 = u.ImgBox1;
+        existingUserhome.ImgBox2 = u.ImgBox2;
+        existingUserhome.ImgBox3 = u.ImgBox3;
+        existingUserhome.ImgBox4 = u.ImgBox4;
+        existingUserhome.ImgBox5 = u.ImgBox5;
+        existingUserhome.ImgBox6 = u.ImgBox6;
+        existingUserhome.ImgBox7 = u.ImgBox7;
+        existingUserhome.ImgBox8 = u.ImgBox8;
+        existingUserhome.ImgBox9 = u.ImgBox9;
+        existingUserhome.ImgBox10 = u.ImgBox10;
+        existingUserhome.UserId = u.UserId;
     
-        const result = await this._userhomeRepo.update(u.UserHomeId, updatedUserhome);
+        const result = await this._userhomeRepo.update(u.UserHomeId, existingUserhome);
     
         if (result.code !== ErrorCode.Success) {
             return { code: ErrorCode.InternalError, message: 'Error updating home' };

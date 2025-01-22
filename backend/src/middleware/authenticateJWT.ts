@@ -23,4 +23,13 @@ const authenticateJWT = (req: Request, res: Response, next: NextFunction): void 
     });
 };
 
-export default authenticateJWT;
+const conditionalAuthMiddleware = (req: Request, res: Response, next: NextFunction): void => {
+    if (req.path === '/LexerAmorcillo/GetUserHome') {   
+        // Skip authentication for this route
+        return next();
+    }
+    // Apply authentication middleware
+    authenticateJWT(req, res, next);
+};
+
+export { authenticateJWT, conditionalAuthMiddleware };
